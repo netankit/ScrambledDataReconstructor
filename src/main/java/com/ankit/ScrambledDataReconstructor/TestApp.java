@@ -59,12 +59,14 @@ public class TestApp {
 	@Test
 	public void testCandidateProbabilities() {
 		CandidateProbability cp = new CandidateProbability();
+
 		HashMap<String, Double> cpm = cp.getcProbMap();
-		System.out.println(cpm.get("the "));
+		// System.out.println(cpm.get("the "));
 
 		BNC bnc = new BNC();
 		HashMap<String, Double> wordFrequencyMap = bnc.getwordFrequencyMap();
-		System.out.println(wordFrequencyMap.get("the"));
+
+		// System.out.println(wordFrequencyMap.get("the"));
 
 		int i = 0;
 
@@ -73,10 +75,10 @@ public class TestApp {
 			// break;
 			String key = entry.getKey();
 			Double value = entry.getValue();
-			System.out.println(key + ":" + value);
+			// System.out.println(key + ":" + value);
 			i++;
 		}
-		System.out.println(i);
+		System.out.println("Total Candidate Probabilities in the HashMap: " + i);
 
 	}
 

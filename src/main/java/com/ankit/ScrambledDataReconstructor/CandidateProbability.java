@@ -48,64 +48,81 @@ public class CandidateProbability {
 		HashMap<String, Double> bigramContextCountMap = new HashMap<String, Double>();
 
 		double totalBigrams = 0;
+
 		System.out.println("Total words in WordList: " + wordList.size());
 		for (String word : wordList) {
 			String spacedword = " " + word + " ";
-			char[] charArray = spacedword.toCharArray();
+			// System.out.println("Spaced Word: #" + spacedword + "#");
 			List<String> bigramArr = new ArrayList<String>();
+
+			char[] charArray = spacedword.toCharArray();
+			int numBigramsInWord = 0;
 			for (int i = 0, j = 1; i < charArray.length && j < charArray.length; i++, j++) {
 				String bigram = String.valueOf(charArray[i]) + String.valueOf(charArray[j]);
-				// System.out.println(bigram);
 				bigramArr.add(bigram);
+				// bigramCountMap: Stores the individual bigram and its
+				// respective corpus count
+				if (bigramCountMap.containsKey(bigram)) {
+					bigramCountMap.put(bigram, bigramCountMap.get(bigram) + wordFrequencyMap.get(word));
+				} else {
+					bigramCountMap.put(bigram, wordFrequencyMap.get(word));
+				}
+				numBigramsInWord++;
 			}
+
 			// Compute Total Bigrams in the Corpus using the BNC Corpus
 			// Statistics
-			totalBigrams += bigramArr.size() * wordFrequencyMap.get(word);
-
-			// bigramCountMap: Stores the individual bigram and its respective
-			// corpus count
-			for (String bigramItem : bigramArr) {
-				if (bigramCountMap.containsKey(bigramItem)) {
-					bigramCountMap.put(bigramItem, bigramCountMap.get(bigramItem) + wordFrequencyMap.get(word));
-				} else {
-					bigramCountMap.put(bigramItem, wordFrequencyMap.get(word));
-				}
-			}
-
+			totalBigrams = totalBigrams + (numBigramsInWord * wordFrequencyMap.get(word));
 			// bigramContextCountMap: Stores how many times, given Bigrams along
 			// with their immediate contexts, co-occur together
-			for (int i = 0, j = 1; i < bigramArr.size() && j < bigramArr.size(); i++, j++) {
+			for (int i = 0, j = i + 2; i < bigramArr.size() && j < bigramArr.size(); i++, j++) {
 				String wordInContext = bigramArr.get(i) + bigramArr.get(j);
+
+				// System.out.println(wordInContext);
+
+				// if (wordInContext == " the") {
+				// System.out.println(wordInContext);
+				// Double wordInContextCount = bigramContextCount(spacedword,
+				// wordInContext);
+				// System.out.println(wordInContextCount);
+				// System.exit(0);
+				// }
+
 				Double wordInContextCount = bigramContextCount(spacedword, wordInContext);
+				// System.out.println(wordInContextCount);
 				if (bigramContextCountMap.containsKey(wordInContext)) {
 					bigramContextCountMap.put(wordInContext, bigramContextCountMap.get(wordInContext)
 							+ (wordInContextCount * wordFrequencyMap.get(word)));
 				} else {
 					bigramContextCountMap.put(wordInContext, wordInContextCount * wordFrequencyMap.get(word));
 				}
-
 			}
-
 		} // End of wordList Traversal.
 
 		System.out.println("Total Bigrams in the Corpus:" + totalBigrams);
 
-		// Conditional Probability: P(A | B) = P(A ∩ B) / P(B)
-		// Iterate through all the keys in the bigramContextCountMap
+		/**
+		 * Conditional Probability: P(A | B) = P(A ∩ B) / P(B)
+		 * 
+		 * Read this as follows: Probability of the current bigram (he) given
+		 * the previous bigram.( t)
+		 * 
+		 * Iterate through all the keys in the bigramContextCountMap
+		 **/
 		for (String bgcontext : bigramContextCountMap.keySet()) {
-			// B -> firstBigram Token
-			String firstBigram = bgcontext.substring(0, 2);
+			// A -> currentBigram Token
+			String currentBigram = bgcontext.substring(2, 4);
+			// B -> previousBigram token
+			String previousBigram = bgcontext.substring(0, 2);
 
-			// A -> secondBigram Token
-			String secondBigram = bgcontext.substring(2);
-			double bgcontextProbability = (bigramContextCountMap.get(bgcontext) / bigramCountMap.get(firstBigram));
-			if (bgcontextProbability == 0.0) {
-				continue;
+			double bgcontextProbability = (bigramContextCountMap.get(bgcontext) / bigramCountMap.get(previousBigram));
+			if (bgcontextProbability != 0.0) {
+				cProbMap.put(bgcontext, bgcontextProbability);
 			}
-			cProbMap.put(bgcontext, bgcontextProbability);
 		}
 
 		this.cProbMap = cProbMap;
+
 	}
 
 	public double bigramContextCount(String input, String bigram) {

@@ -67,13 +67,11 @@ public class BNC {
 				String key = tmp[1];
 				double value = Double.parseDouble(tmp[0]);
 
+				// System.out.println(key + ":" + value);
+				// System.exit(0);
+
 				if (hm.containsKey(key)) {
-					Double oldValue = hm.get(key);
-					// if (oldValue < value) {
-					double newValue = oldValue + value;
-					// System.out.println(key + ":" + newValue);
-					hm.put(key, oldValue + newValue);
-					// }
+					hm.put(key, hm.get(key) + value);
 				} else {
 					hm.put(key, value);
 					this.wordList.add(key);
@@ -81,7 +79,9 @@ public class BNC {
 			}
 
 			// Close streams
+			br.close();
 			in.close();
+			fstream.close();
 		} catch (Exception e) {// Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 		}

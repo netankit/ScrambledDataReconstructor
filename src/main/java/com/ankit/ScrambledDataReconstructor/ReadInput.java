@@ -50,7 +50,9 @@ public class ReadInput {
 				// break;
 			}
 			// Close streams
+			br.close();
 			in.close();
+			fstream.close();
 			// Set the Value of the inputarr variable
 			this.inputarr = arr;
 		} catch (Exception e) {// Catch exception if any
