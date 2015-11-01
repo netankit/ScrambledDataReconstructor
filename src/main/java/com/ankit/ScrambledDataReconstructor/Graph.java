@@ -11,18 +11,48 @@ package com.ankit.ScrambledDataReconstructor;
 public class Graph {
 
 	int numVertices;
-	float[][] adjGraph;
+	double[][] adjGraph;
 
+	/**
+	 * Default Constructor for the Graph
+	 * 
+	 * @param numVertices:
+	 *            Number of Vertices in the Graph
+	 */
 	public Graph(int numVertices) {
+		this.numVertices = numVertices;
 		this.adjGraph = setAdjacencyMatrixGraph(numVertices);
 	}
 
 	/**
 	 * @return
 	 */
-	private float[][] setAdjacencyMatrixGraph(int numVertices) {
+	private double[][] setAdjacencyMatrixGraph(int numVertices) {
 		// TODO Auto-generated method stub
-		float[][] adjGraph = new float[numVertices][numVertices];
+		double[][] adjGraph = new double[numVertices][numVertices];
 		return adjGraph;
+	}
+
+	void addEdge(int source, int destination, double weight) {
+		this.adjGraph[source][destination] = weight;
+	}
+
+	int getnumberOfVertices() {
+		return this.numVertices;
+	}
+
+	double[][] getAdjMatrixGraph() {
+		return this.adjGraph;
+	}
+
+	void printGraph() {
+		double[][] adjGraph = this.adjGraph;
+		for (int i = 0; i < adjGraph.length; i++) {
+			for (int j = 0; j < adjGraph[i].length; j++) {
+				System.out.print(adjGraph[i][j] + " ");
+			}
+			System.out.println();
+		}
+
 	}
 }

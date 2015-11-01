@@ -1,5 +1,6 @@
 package com.ankit.ScrambledDataReconstructor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,13 +29,32 @@ public class App {
 		System.out.println("Reading Input File... " + inputFilename);
 		ReadInput ri = new ReadInput(inputFilename);
 		List<String[]> inputDataList = ri.getInputDataArray();
-
+		List<Graph> inputGraphList = new ArrayList<Graph>();
 		// ri.printInputDataArray();
 
 		// Calculate The n - most probable Hamiltionian Paths
+		// Populate the Graph with edgeWeights obtained from the Context
+		// Candidate Probabilities. And add the graphs from each row to the
+		// inputGraphList
 		for (String[] inputRow : inputDataList) {
 			Graph G = new Graph(inputRow.length);
+			for (int i = 0; i < inputRow.length; i++) {
+				for (int j = 0; j < inputRow.length; j++) {
+					// System.out.println(i + "," + j);
+					String bigramAndContext = inputRow[i] + inputRow[j];
+					double edgeWeight;
+					if (cpmInstance.containsKey(bigramAndContext)) {
+						edgeWeight = cpmInstance.get(bigramAndContext);
+					} else
+						edgeWeight = 0;
+					G.addEdge(i, j, edgeWeight);
+				}
+			}
+			System.out.println("\n... Next Row ... ");
+			inputGraphList.add(G);
+			G.printGraph();
 
+			// System.exit(0);
 		}
 		// Retrieve the order using one of those Hamiltonian paths. -- Think we
 		// need to iterate over all the input cases
