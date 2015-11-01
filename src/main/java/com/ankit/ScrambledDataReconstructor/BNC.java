@@ -57,7 +57,6 @@ public class BNC {
 			// Read File Line By Line
 			while ((strLine = br.readLine()) != null) {
 				if (strLine.startsWith("100106029")) {
-					// System.out.println(strLine);
 					continue;
 				}
 				// Process each line in the input file
@@ -66,9 +65,6 @@ public class BNC {
 				// System.out.println(strLine);
 				String key = tmp[1];
 				double value = Double.parseDouble(tmp[0]);
-
-				// System.out.println(key + ":" + value);
-				// System.exit(0);
 
 				if (hm.containsKey(key)) {
 					hm.put(key, hm.get(key) + value);

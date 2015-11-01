@@ -43,7 +43,6 @@ public class ReadInput {
 				if (!strLine.startsWith("|"))
 					continue;
 				// Process each line in the input file
-				// System.out.println(strLine);
 				String[] line_tmp = processLine(strLine);
 				arr.add(line_tmp);
 				rownum += 1;
@@ -90,6 +89,24 @@ public class ReadInput {
 	 */
 	public void printInputDataArray() {
 		List<String[]> arr = getInputDataArray();
+		int i = 1;
+		for (String[] item : arr) {
+			System.out.print("Input Row " + i + ": ");
+			for (int j = 0; j < item.length; j++) {
+				System.out.print(item[j] + "#");
+			}
+			System.out.println();
+			i++;
+		}
+
+	}
+
+	/**
+	 * Print Custom Data Array on the Screen.
+	 */
+	public void printCustomDataArray(String[] strarr) {
+		List<String[]> arr = new ArrayList<String[]>();
+		arr.add(strarr);
 		int i = 1;
 		for (String[] item : arr) {
 			System.out.print("Input Row " + i + ": ");

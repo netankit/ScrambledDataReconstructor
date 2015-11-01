@@ -13,7 +13,7 @@ public class Graph {
 	int numVertices;
 	float[][] adjGraph;
 
-	public void Graph(int numVertices) {
+	public Graph(int numVertices) {
 		this.adjGraph = setAdjacencyMatrixGraph(numVertices);
 	}
 

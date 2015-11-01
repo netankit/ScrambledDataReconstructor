@@ -23,7 +23,8 @@ public class TestApp {
 		ReadInput ri = new ReadInput(filename);
 		String line = "|de|  | f|Cl|nf|ed|au| i|ti|  |ma|ha|or|nn|ou| S|on|nd|on|";
 		String[] out = ri.processLine(line);
-		System.out.println(out);
+		ri.printCustomDataArray(out);
+		// System.out.println(out);
 	}
 
 	@Test

@@ -52,7 +52,6 @@ public class CandidateProbability {
 		System.out.println("Total words in WordList: " + wordList.size());
 		for (String word : wordList) {
 			String spacedword = " " + word + " ";
-			// System.out.println("Spaced Word: #" + spacedword + "#");
 			List<String> bigramArr = new ArrayList<String>();
 
 			char[] charArray = spacedword.toCharArray();
@@ -78,18 +77,7 @@ public class CandidateProbability {
 			for (int i = 0, j = i + 2; i < bigramArr.size() && j < bigramArr.size(); i++, j++) {
 				String wordInContext = bigramArr.get(i) + bigramArr.get(j);
 
-				// System.out.println(wordInContext);
-
-				// if (wordInContext == " the") {
-				// System.out.println(wordInContext);
-				// Double wordInContextCount = bigramContextCount(spacedword,
-				// wordInContext);
-				// System.out.println(wordInContextCount);
-				// System.exit(0);
-				// }
-
 				Double wordInContextCount = bigramContextCount(spacedword, wordInContext);
-				// System.out.println(wordInContextCount);
 				if (bigramContextCountMap.containsKey(wordInContext)) {
 					bigramContextCountMap.put(wordInContext, bigramContextCountMap.get(wordInContext)
 							+ (wordInContextCount * wordFrequencyMap.get(word)));
