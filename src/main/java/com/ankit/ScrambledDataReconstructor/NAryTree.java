@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class NAryTree {
 	String root;
-	List children;
+	List<NAryTree> children;
 
 	public NAryTree(String rootName) {
 		this.root = rootName;

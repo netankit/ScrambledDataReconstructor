@@ -14,12 +14,13 @@ import java.util.List;
 public class App {
 	public static void main(String[] args) {
 		String inputFilename = args[0];
-		int numCharachter = Integer.parseInt(args[2]);
-		int numColumns = Integer.parseInt(args[1]);
 
+		// int numCharachter = Integer.parseInt(args[2]);
+		// int numColumns = Integer.parseInt(args[1]);
 		// System.out.println("Total Number of Columns... " + numColumns);
 		// System.out.println("Number of Charachters Per Column... " +
 		// numCharachter);
+
 		System.out.println("Starting the Reconstruction Process ... ");
 
 		// Compute the candidate probabilities of the letters
@@ -74,7 +75,8 @@ public class App {
 		 * beta: depth from the first level node to which we explore the maximum
 		 * weights.
 		 * 
-		 * We choose the Alpha and Beta heuristically as 5 and 6 respectively
+		 * We choose the Alpha and Beta heuristically as inputArr.length/2 or
+		 * numberVerticesGraph/2
 		 * 
 		 * Thus, we randomly choose our first node [Here we can choose based on
 		 * the start of the sentence to be a capital letter, if available for
@@ -86,11 +88,16 @@ public class App {
 		 * from the node and again the objective is to maximize the overall
 		 * weight of hamiltonian path.
 		 */
+		int count = 1;
 		for (Graph g : inputGraphList) {
 			String[] inputArr = inputGraphMap.get(g);
 			ProcessGraph pg = new ProcessGraph(g, inputArr);
+			System.out.print("Input " + count + ":");
+			ri.printCustomDataArray(inputArr);
+			System.out.print("Output: ");
 			// Prints the Maximum Weighted Hamiltonian Path
 			pg.getOptimalMaximumWeightedHamiltonianPath();
+			count++;
 		}
 
 	}

@@ -4,6 +4,7 @@
 package com.ankit.ScrambledDataReconstructor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -36,12 +37,25 @@ public class ProcessGraph {
 	public void getOptimalMaximumWeightedHamiltonianPath() {
 		double[][] adjGraph = this.adjGraph;
 		String[] inputArr = this.inputArr;
+		List<NAryTree> naryTreeList = new ArrayList();
 		// Choose the first node Randomly or heuristically. or we choose a
 		// subset of the nodes as first node and run the algorithms thereon.
 
 		// V1: Initializing the Root Node of the Tree Randomly
 		int rootIndex = randInt(0, inputArr.length);
 		String rootName = inputArr[rootIndex];
+		NAryTree treeName = generateNAryTrees(adjGraph, inputArr, rootName, rootIndex);
+
+	}
+
+	/**
+	 * Generates an N-ary Tree based on the Alpha-Beta Tree Pruning Heuristics.
+	 * 
+	 * @param adjGraph
+	 * @param inputArr
+	 * @param rootIndex
+	 */
+	private NAryTree generateNAryTrees(double[][] adjGraph, String[] inputArr, String rootName, int rootIndex) {
 		Queue<Edge> pq = new PriorityQueue<Edge>(inputArr.length - 1, edgeWeightComparator);
 		List<String> childrenList = new ArrayList<String>();
 		for (int i = 0; i < inputArr.length; i++) {
@@ -55,16 +69,27 @@ public class ProcessGraph {
 			pq.add(edge);
 		}
 
-		// Create an N-Ary Tree rooted at the rootIndex in inputArr[].
-		NAryTree ntree = new NAryTree(rootName);
 		Queue<Edge> pq_tmp = pq;
-		int alpha = 5;
-		for (int i = alpha; i == 0; i--) {
+		int alpha = inputArr.length / 2;
+		// We poll only the top alpha-valued maximum weighted edges based on our
+		// heuristically chosen value of aplha
+		for (int i = alpha; i > 0; i--) {
 			Edge edge_tmp = pq_tmp.poll();
 			String childname_tmp = (edge_tmp.edgeName.substring(2, 4));
 			childrenList.add(childname_tmp);
 		}
+		// Create an N-Ary Tree rooted at the rootIndex in inputArr[].
+		NAryTree ntree = new NAryTree(rootName);
+		ntree.children = childrenList;
 
+		for (Object child : ntree.children) {
+			List<String> tmp = Arrays.asList(inputArr);
+			// TODO: Need to check for Duplicates within the same Array List...
+			// very much possible.
+			generateNAryTrees(adjGraph, inputArr, (String) child, tmp.indexOf((String) child));
+		}
+
+		return ntree;
 	}
 
 	/**
@@ -84,7 +109,7 @@ public class ProcessGraph {
 
 	/**
 	 * Comparator responsible for the creation of Maximum Weight Edges Priority
-	 * Queue.
+	 * Queue. Using Java Anonymous Classes.
 	 */
 	public static Comparator<Edge> edgeWeightComparator = new Comparator<Edge>() {
 		public int compare(Edge e1, Edge e2) {
